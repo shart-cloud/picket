@@ -1,0 +1,79 @@
+{
+  "name": "picket-admin",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "assets": {
+    "directory": "../../apps/web/dist",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/health", "/device", "/device/*"]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.01
+    }
+  },
+  "d1_databases": [
+    {
+      "binding": "AUTH_DB",
+      "database_name": "picket-auth",
+      "database_id": "7ca6ce4d-02f4-4bbe-a8bc-635696f8fb80"
+    },
+    {
+      "binding": "ALERT_STATE_DB",
+      "database_name": "picket-alert-state",
+      "database_id": "36e1ee33-481a-484c-8966-62a604d724ea",
+      "migrations_dir": "../alert-router/migrations"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "QUERY_JOBS_QUEUE",
+        "queue": "picket-query-jobs"
+      }
+    ]
+  },
+  "pipelines": [
+    {
+      "binding": "THREAT_INTEL_PIPELINE",
+      "pipeline": "MISSING"
+    },
+    {
+      "binding": "ASSETS_PIPELINE",
+      "pipeline": "MISSING"
+    },
+    {
+      "binding": "USERS_PIPELINE",
+      "pipeline": "MISSING"
+    }
+  ],
+  // Threat-intel IOC store for /api/v1/enrichment (M4). Same picket-config KV
+  // namespace the ingest Worker reads (terraform output `kv_namespace_id`).
+  "kv_namespaces": [
+    {
+      "binding": "ENRICHMENT_KV",
+      "id": "e70fbf31b2c242ebbe99ef46e1bc5e10"
+    }
+  ],
+  "vars": {
+    "CF_ACCESS_TEAM_DOMAIN": "shartdotcloud.cloudflareaccess.com",
+    "CF_ACCESS_AUD": "51ca0503f9d1fcf6a77325a8ae12c81bbc3c379a11cc3ed25867408a5d44b701",
+    "PICKET_R2_WAREHOUSE": "11caecd272df7dbdcc636034c25b1f1c_picket-lake",
+    "PICKET_TABLE_SUFFIX": "chief_viper"
+    // Optional: "PICKET_NL_QUERY_MODEL" overrides the NL-query model (default claude-opus-4-8).
+  }
+  // Secrets (set via `wrangler secret put`):
+  //   BETTER_AUTH_SECRET — signing secret for better-auth
+  //   R2_SQL_TOKEN       — kept for backward compat; the runner Worker is the actual executor
+  //   ANTHROPIC_API_KEY  — enables POST /api/v1/query/natural (NL→SQL); route 500s without it
+  //
+  // This Worker must be placed behind a Cloudflare Access application.
+  // The middleware additionally verifies the Cf-Access-Jwt-Assertion JWT.
+}

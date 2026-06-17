@@ -1,0 +1,52 @@
+{
+  "name": "picket-detection",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.01
+    }
+  },
+  "queues": {
+    "producers": [
+      {
+        "binding": "ALERT_QUEUE",
+        "queue": "picket-alerts"
+      }
+    ]
+  },
+  "pipelines": [
+    {
+      "binding": "ALERTS_PIPELINE",
+      "pipeline": "cfbcbaa3293845b6a5935e1c42bdc1b9"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "ALERT_STATE_DB",
+      "database_name": "picket-alert-state",
+      "database_id": "36e1ee33-481a-484c-8966-62a604d724ea",
+      "migrations_dir": "../alert-router/migrations"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "STATEFUL_DETECTION",
+        "class_name": "StatefulDetectionObject"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["StatefulDetectionObject"]
+    }
+  ]
+}

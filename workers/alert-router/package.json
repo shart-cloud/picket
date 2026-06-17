@@ -1,0 +1,14 @@
+{
+  "name": "@picket/alert-router-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter @picket/core build && tsc -p tsconfig.json",
+    "test": "pnpm --filter @picket/core build && vitest run",
+    "typecheck": "pnpm --filter @picket/core build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/core": "workspace:*"
+  }
+}

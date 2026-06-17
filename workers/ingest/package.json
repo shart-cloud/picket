@@ -1,0 +1,20 @@
+{
+  "name": "@picket/ingest-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter @picket/core build && pnpm --filter @picket/normalize build && pnpm --filter @picket/api build && tsc -p tsconfig.json",
+    "test": "pnpm --filter @picket/normalize build && pnpm --filter @picket/api build && pnpm --filter @picket/detection-worker build && vitest run",
+    "typecheck": "pnpm --filter @picket/normalize build && pnpm --filter @picket/api build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/api": "workspace:*",
+    "@picket/core": "workspace:*",
+    "@picket/normalize": "workspace:*",
+    "hono": "^4.6.0"
+  },
+  "devDependencies": {
+    "@picket/detection-worker": "workspace:*"
+  }
+}

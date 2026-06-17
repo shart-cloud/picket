@@ -1,0 +1,15 @@
+{
+  "name": "@picket/query-runner-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter @picket/core build && pnpm --filter @picket/query build && tsc -p tsconfig.json",
+    "test": "pnpm --filter @picket/core build && pnpm --filter @picket/query build && vitest run",
+    "typecheck": "pnpm --filter @picket/core build && pnpm --filter @picket/query build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/core": "workspace:*",
+    "@picket/query": "workspace:*"
+  }
+}

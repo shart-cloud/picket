@@ -1,0 +1,22 @@
+{
+  "name": "@picket/scheduled-detection-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "pnpm --dir ../.. build:rules && pnpm --filter @picket/core build && pnpm --filter @picket/sigma-engine build && pnpm --filter @picket/query build && tsc -p tsconfig.json",
+    "test": "pnpm --dir ../.. build:rules && pnpm --filter @picket/core build && pnpm --filter @picket/sigma-engine build && pnpm --filter @picket/query build && vitest run",
+    "typecheck": "pnpm --dir ../.. build:rules && pnpm --filter @picket/core build && pnpm --filter @picket/sigma-engine build && pnpm --filter @picket/query build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/core": "workspace:*",
+    "@picket/query": "workspace:*",
+    "@picket/sigma-engine": "workspace:*"
+  }
+}

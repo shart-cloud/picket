@@ -1,0 +1,22 @@
+{
+  "name": "@picket/admin-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter @picket/core build && pnpm --filter @picket/api build && pnpm --filter @picket/query build && pnpm --filter @picket/sigma-engine build && tsc -p tsconfig.json",
+    "test": "pnpm --filter @picket/core build && pnpm --filter @picket/api build && pnpm --filter @picket/query build && pnpm --filter @picket/sigma-engine build && vitest run --passWithNoTests",
+    "typecheck": "pnpm --filter @picket/core build && pnpm --filter @picket/api build && pnpm --filter @picket/query build && pnpm --filter @picket/sigma-engine build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/api": "workspace:*",
+    "@picket/core": "workspace:*",
+    "@picket/query": "workspace:*",
+    "@picket/sigma-engine": "workspace:*",
+    "hono": "^4.6.0",
+    "jose": "^5.9.0"
+  },
+  "devDependencies": {
+    "@better-auth/cli": "1.4.21"
+  }
+}
