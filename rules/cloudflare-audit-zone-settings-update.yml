@@ -1,0 +1,20 @@
+id: cloudflare-audit-zone-settings-update
+title: Cloudflare zone settings changed
+description: Detects Cloudflare audit events for zone settings updates.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - cloudflare
+  - configuration
+  - defense-evasion
+logsource:
+  source: cloudflare_audit
+  class_name: api_activity
+detection:
+  selection:
+    api.operation: zone_settings_update
+  condition: selection
+dedupe_key: cloud.account.uid
+dedupe_prefix: cloudflare-zone-settings-update

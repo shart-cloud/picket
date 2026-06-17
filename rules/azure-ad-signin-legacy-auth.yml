@@ -1,0 +1,25 @@
+id: azure-ad-signin-legacy-auth
+title: Azure AD legacy authentication sign-in
+description: Detects Azure AD sign-ins using legacy client applications or protocols.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - azure
+  - identity
+  - defense-evasion
+logsource:
+  source: azure_ad_signin
+  class_name: authentication
+detection:
+  selection:
+    raw.clientAppUsed:
+      - Exchange ActiveSync
+      - IMAP
+      - POP
+      - SMTP
+      - Other clients
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: azure-ad-legacy-auth

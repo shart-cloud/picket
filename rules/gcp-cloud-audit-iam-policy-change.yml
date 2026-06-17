@@ -1,0 +1,22 @@
+id: gcp-cloud-audit-iam-policy-change
+title: GCP IAM policy changed
+description: Detects IAM policy changes in GCP Cloud Audit Logs.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - gcp
+  - iam
+  - persistence
+logsource:
+  source: gcp_cloud_audit
+  class_name: api_activity
+detection:
+  selection:
+    api.operation:
+      - SetIamPolicy
+      - google.iam.admin.v1.SetIAMPolicy
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: gcp-iam-policy-change

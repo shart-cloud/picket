@@ -1,0 +1,40 @@
+id: aws-cloudtrail-threat-intel-ip-match
+title: CloudTrail activity from a known-malicious IP (threat intel match)
+description: >
+  A CloudTrail event originated from a source IP present in the threat_intel
+  enrichment feed. This is a query-time JOIN against the threat_intel Iceberg
+  table, so it runs as a scheduled SQL detection rather than in the realtime
+  engine.
+severity: critical
+execution: sql
+enabled: true
+logsource:
+  source: aws_cloudtrail
+  class_name: api_activity
+tags:
+  - attack.command_and_control
+  - threat_intel
+  - aws
+dedupe_prefix: aws-ti-ip
+sql:
+  query: |
+    SELECT e.actor_user_uid, e.src_endpoint_ip, ti.feed_name, ti.threat_type, COUNT(*) AS n
+    FROM aws_cloudtrail e
+    JOIN threat_intel ti
+      ON e.src_endpoint_ip = ti.indicator
+    WHERE e.time > now() - interval '1' hour
+      AND ti.indicator_type = 'ipv4'
+      AND ti.active = true
+      AND NOT EXISTS (
+        SELECT 1
+        FROM threat_intel tombstone
+        WHERE tombstone.indicator = ti.indicator
+          AND tombstone.indicator_type = ti.indicator_type
+          AND tombstone.active = false
+          AND tombstone.loaded_at >= ti.loaded_at
+      )
+    GROUP BY e.actor_user_uid, e.src_endpoint_ip, ti.feed_name, ti.threat_type
+  interval: 15m
+  threshold: 1
+  count_field: n
+  group_by: src_endpoint_ip

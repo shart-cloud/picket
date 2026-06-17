@@ -1,0 +1,24 @@
+id: k8s-anonymous-api-request-succeeded
+title: Kubernetes anonymous API request succeeded
+description: Detects successful Kubernetes API requests made by anonymous or unauthenticated users.
+status: stable
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - kubernetes
+  - audit
+  - identity
+  - anonymous-access
+logsource:
+  source: kubernetes_audit
+  class_name: api_activity
+detection:
+  selection:
+    status: success
+    actor.user.name:
+      - system:anonymous
+      - system:unauthenticated
+  condition: selection
+dedupe_key: src_endpoint.ip
+dedupe_prefix: k8s-anonymous-api

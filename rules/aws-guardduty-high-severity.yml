@@ -1,0 +1,24 @@
+id: aws-guardduty-high-severity
+title: AWS GuardDuty high severity finding
+description: Detects high severity GuardDuty findings that should be reviewed promptly.
+status: experimental
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - aws
+  - guardduty
+  - finding
+logsource:
+  source: aws_guardduty
+  class_name: detection_finding
+detection:
+  selection:
+    raw.detail.severity:
+      - 7
+      - 8
+      - 9
+      - 10
+  condition: selection
+dedupe_key: metadata.original_uid
+dedupe_prefix: aws-guardduty

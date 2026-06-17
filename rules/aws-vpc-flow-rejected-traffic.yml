@@ -1,0 +1,20 @@
+id: aws-vpc-flow-rejected-traffic
+title: AWS VPC Flow rejected network traffic
+description: Detects rejected VPC Flow Log records. Use as a low-severity signal and a basis for scheduled aggregation rules.
+status: experimental
+severity: low
+enabled: false
+execution: sigma
+tags:
+  - aws
+  - vpc-flow
+  - network
+logsource:
+  source: aws_vpc_flow
+  class_name: network_activity
+detection:
+  selection:
+    activity_name: REJECT
+  condition: selection
+dedupe_key: src_endpoint.ip
+dedupe_prefix: aws-vpc-flow-reject

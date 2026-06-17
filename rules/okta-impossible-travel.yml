@@ -1,0 +1,27 @@
+id: okta-impossible-travel
+title: Okta impossible travel
+description: Detects geographically implausible Okta authentication activity for a user. Requires stateful geo-velocity evaluation.
+status: experimental
+severity: high
+enabled: false
+execution: stateful
+tags:
+  - okta
+  - identity
+  - authentication
+  - geo-velocity
+logsource:
+  source: okta_auth
+  class_name: authentication
+detection:
+  selection:
+    status: success
+  condition: selection
+stateful:
+  type: geo_velocity
+  field: actor.user.uid
+  location_field: src_endpoint
+  max_speed_kmh: 900
+  window: 24h
+dedupe_key: actor.user.uid
+dedupe_prefix: okta-impossible-travel

@@ -1,0 +1,25 @@
+id: azure-ad-signin-risky
+title: Azure AD risky sign-in
+description: Detects Azure AD sign-ins with elevated risk state or high aggregate risk level.
+status: experimental
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - azure
+  - identity
+  - initial-access
+logsource:
+  source: azure_ad_signin
+  class_name: authentication
+detection:
+  selection_state:
+    raw.riskState:
+      - atRisk
+      - confirmedCompromised
+  selection_level:
+    raw.riskLevelAggregated:
+      - high
+  condition: selection_state or selection_level
+dedupe_key: actor.user.email
+dedupe_prefix: azure-ad-risky-signin

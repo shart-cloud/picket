@@ -1,0 +1,21 @@
+id: github-audit-repo-visibility-public
+title: GitHub repository made public
+description: Detects GitHub audit events where a repository visibility change makes the repository public.
+status: experimental
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - github
+  - exposure
+  - data-loss
+logsource:
+  source: github_audit
+  class_name: api_activity
+detection:
+  selection:
+    api.operation: repo.visibility_change
+    raw.visibility: public
+  condition: selection
+dedupe_key: raw.repo
+dedupe_prefix: github-repo-public

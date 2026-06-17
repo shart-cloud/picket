@@ -1,0 +1,26 @@
+id: okta-brute-force
+title: Okta brute force authentication failures
+description: Detects repeated failed Okta authentication attempts from the same source IP. Requires stateful threshold evaluation.
+status: experimental
+severity: medium
+enabled: false
+execution: stateful
+tags:
+  - okta
+  - identity
+  - authentication
+  - brute-force
+logsource:
+  source: okta_auth
+  class_name: authentication
+detection:
+  selection:
+    status: failure
+  condition: selection
+stateful:
+  type: threshold
+  field: src_endpoint.ip
+  threshold: 5
+  window: 15m
+dedupe_key: src_endpoint.ip
+dedupe_prefix: okta-brute-force

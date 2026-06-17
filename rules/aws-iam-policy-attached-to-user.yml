@@ -1,0 +1,23 @@
+id: aws-iam-policy-attached-to-user
+title: IAM policy attached to user
+description: Detects CloudTrail IAM policy attachment or inline policy changes made directly to an IAM user.
+status: stable
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - aws
+  - cloudtrail
+  - iam
+  - privilege-escalation
+logsource:
+  source: aws_cloudtrail
+detection:
+  selection:
+    status: success
+    activity_name:
+      - AttachUserPolicy
+      - PutUserPolicy
+  condition: selection
+dedupe_key: raw.requestParameters.userName
+dedupe_prefix: aws-iam-user-policy

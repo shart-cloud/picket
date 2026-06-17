@@ -1,0 +1,33 @@
+id: aws-k8s-cross-source-identity
+title: Principal active in both AWS CloudTrail and Kubernetes audit within the hour
+description: >
+  The same principal (actor_user_uid) generated activity in both the AWS
+  CloudTrail and Kubernetes audit logs inside the same hour. This cross-source
+  JOIN can only run as a scheduled SQL detection. It is a low-signal correlation
+  meant to surface identities with a broad blast radius or possible lateral
+  movement across the cloud and cluster control planes for analyst review.
+severity: medium
+execution: sql
+enabled: true
+logsource:
+  source: aws_cloudtrail
+  class_name: api_activity
+tags:
+  - attack.lateral_movement
+  - correlation
+  - aws
+  - kubernetes
+dedupe_prefix: aws-k8s-xsrc
+sql:
+  query: |
+    SELECT c.actor_user_uid, COUNT(*) AS n
+    FROM aws_cloudtrail c
+    JOIN kubernetes_audit k
+      ON c.actor_user_uid = k.actor_user_uid
+    WHERE c.time > now() - interval '1' hour
+      AND k.time > now() - interval '1' hour
+    GROUP BY c.actor_user_uid
+  interval: 30m
+  threshold: 1
+  count_field: n
+  group_by: actor_user_uid

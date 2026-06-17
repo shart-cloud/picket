@@ -1,0 +1,21 @@
+id: m365-management-audit-log-disabled
+title: Microsoft 365 audit logging disabled
+description: Detects Microsoft 365 audit configuration changes that disable unified audit logging.
+status: experimental
+severity: critical
+enabled: true
+execution: sigma
+tags:
+  - m365
+  - defense-evasion
+logsource:
+  source: m365_management
+  class_name: api_activity
+detection:
+  selection:
+    api.operation:
+      - Set-AdminAuditLogConfig
+      - Set-MailboxAuditBypassAssociation
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: m365-audit-disabled

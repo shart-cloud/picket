@@ -1,0 +1,24 @@
+id: azure-ad-signin-failed-mfa
+title: Azure AD sign-in failed MFA requirement
+description: Detects Azure AD sign-ins that failed because the user needed to perform multi-factor authentication.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - azure
+  - identity
+  - mfa
+logsource:
+  source: azure_ad_signin
+  class_name: authentication
+detection:
+  selection_code:
+    status: failure
+    raw.status.errorCode: 50076
+  selection_reason:
+    status: failure
+    raw.status.failureReason|contains: multi-factor authentication
+  condition: selection_code or selection_reason
+dedupe_key: actor.user.email
+dedupe_prefix: azure-ad-failed-mfa

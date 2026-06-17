@@ -1,0 +1,23 @@
+id: cloudflare-audit-api-token-change
+title: Cloudflare API token changed
+description: Detects Cloudflare audit events for API token creation, update, or deletion.
+status: experimental
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - cloudflare
+  - identity
+  - credential-access
+logsource:
+  source: cloudflare_audit
+  class_name: api_activity
+detection:
+  selection:
+    api.operation:
+      - api_token_create
+      - api_token_update
+      - api_token_delete
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: cloudflare-api-token-change

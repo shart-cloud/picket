@@ -1,0 +1,29 @@
+id: k8s-excessive-failed-auth
+title: Excessive failed Kubernetes API authentication
+description: Detects 10 or more forbidden or unauthorized Kubernetes API responses from the same source IP in 5 minutes.
+status: stable
+severity: medium
+enabled: true
+execution: stateful
+tags:
+  - kubernetes
+  - audit
+  - identity
+  - brute-force
+logsource:
+  source: kubernetes_audit
+  class_name: api_activity
+detection:
+  selection:
+    raw.responseStatus.code:
+      - 401
+      - 403
+  condition: selection
+stateful:
+  type: threshold
+  field: src_endpoint.ip
+  threshold: 10
+  window: 5m
+  suppress_for: 15m
+dedupe_key: src_endpoint.ip
+dedupe_prefix: k8s-failed-auth

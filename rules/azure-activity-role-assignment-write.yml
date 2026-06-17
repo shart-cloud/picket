@@ -1,0 +1,20 @@
+id: azure-activity-role-assignment-write
+title: Azure role assignment created or changed
+description: Detects Azure role assignment writes from Azure Activity Logs.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - azure
+  - iam
+  - privilege-escalation
+logsource:
+  source: azure_activity
+  class_name: api_activity
+detection:
+  selection:
+    api.operation|contains: Microsoft.Authorization/roleAssignments/write
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: azure-role-assignment-write

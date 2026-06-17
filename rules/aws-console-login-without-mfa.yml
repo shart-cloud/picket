@@ -1,0 +1,23 @@
+id: aws-console-login-without-mfa
+title: AWS console login without MFA
+description: Detects successful AWS console logins where CloudTrail reports MFAUsed as No.
+status: stable
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - aws
+  - cloudtrail
+  - identity
+  - mfa
+logsource:
+  source: aws_cloudtrail
+  class_name: authentication
+detection:
+  selection:
+    activity_name: ConsoleLogin
+    status: success
+    raw.additionalEventData.MFAUsed: No
+  condition: selection
+dedupe_key: actor.user.uid
+dedupe_prefix: aws-console-no-mfa

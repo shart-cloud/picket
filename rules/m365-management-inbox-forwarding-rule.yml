@@ -1,0 +1,22 @@
+id: m365-management-inbox-forwarding-rule
+title: Microsoft 365 inbox forwarding rule created or modified
+description: Detects Exchange inbox rule creation or modification events that may indicate mailbox persistence or collection.
+status: experimental
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - m365
+  - exchange
+  - collection
+logsource:
+  source: m365_management
+  class_name: api_activity
+detection:
+  selection:
+    api.operation:
+      - New-InboxRule
+      - Set-InboxRule
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: m365-inbox-rule

@@ -1,0 +1,32 @@
+id: aws-vpc-flow-admin-port-accepted
+title: AWS VPC Flow accepted administrative port traffic
+description: Detects accepted VPC Flow Log records targeting common administrative ports from non-private source addresses.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - aws
+  - vpc-flow
+  - network
+  - initial-access
+logsource:
+  source: aws_vpc_flow
+  class_name: network_activity
+detection:
+  selection:
+    activity_name: ACCEPT
+    raw.dstport:
+      - "22"
+      - "3389"
+      - "5985"
+      - "5986"
+  filter_private_source_10:
+    src_endpoint.ip|startswith: "10."
+  filter_private_source_172_16:
+    src_endpoint.ip|re: "^172\\.(1[6-9]|2[0-9]|3[0-1])\\."
+  filter_private_source_192_168:
+    src_endpoint.ip|startswith: "192.168."
+  condition: selection and not filter_private_source_10 and not filter_private_source_172_16 and not filter_private_source_192_168
+dedupe_key: dst_endpoint.ip
+dedupe_prefix: aws-vpc-flow-admin-port

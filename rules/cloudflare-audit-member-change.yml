@@ -1,0 +1,24 @@
+id: cloudflare-audit-member-change
+title: Cloudflare account member changed
+description: Detects Cloudflare audit events for account member or user permission changes.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - cloudflare
+  - iam
+  - privilege-escalation
+logsource:
+  source: cloudflare_audit
+  class_name: api_activity
+detection:
+  selection:
+    api.operation:
+      - account_member_add
+      - account_member_update
+      - account_member_remove
+      - user_update
+  condition: selection
+dedupe_key: actor.user.email
+dedupe_prefix: cloudflare-member-change

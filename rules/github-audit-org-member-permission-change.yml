@@ -1,0 +1,28 @@
+id: github-audit-org-member-permission-change
+title: GitHub organization member permission changed
+description: Detects GitHub audit events for organization, repository, or team membership and permission changes.
+status: experimental
+severity: medium
+enabled: true
+execution: sigma
+tags:
+  - github
+  - iam
+  - privilege-escalation
+logsource:
+  source: github_audit
+detection:
+  selection:
+    api.operation:
+      - org.add_member
+      - org.remove_member
+      - org.update_member
+      - team.add_member
+      - team.remove_member
+      - team.update_member
+      - repo.add_member
+      - repo.remove_member
+      - repo.update_member
+  condition: selection
+dedupe_key: user.name
+dedupe_prefix: github-member-change

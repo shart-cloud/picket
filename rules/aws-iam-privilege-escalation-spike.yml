@@ -1,0 +1,33 @@
+id: aws-iam-privilege-escalation-spike
+title: Spike in IAM privilege-granting actions by a single principal
+description: >
+  A single principal performed an unusually high number of IAM
+  privilege-granting actions within one hour. This aggregation cannot be
+  expressed by the realtime engine, so it runs as a scheduled SQL detection.
+  A spike can indicate privilege escalation or a compromised credential.
+severity: high
+execution: sql
+enabled: true
+logsource:
+  source: aws_cloudtrail
+  class_name: api_activity
+tags:
+  - attack.privilege_escalation
+  - aws
+dedupe_prefix: aws-iam-priv-spike
+sql:
+  query: |
+    SELECT actor_user_uid, COUNT(*) AS n
+    FROM aws_cloudtrail
+    WHERE time > now() - interval '1' hour
+      AND api_operation IN (
+        'AttachUserPolicy', 'PutUserPolicy',
+        'AttachRolePolicy', 'PutRolePolicy',
+        'CreateAccessKey'
+      )
+    GROUP BY actor_user_uid
+    HAVING COUNT(*) >= 5
+  interval: 15m
+  threshold: 5
+  count_field: n
+  group_by: actor_user_uid

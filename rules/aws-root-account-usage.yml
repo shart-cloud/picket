@@ -1,0 +1,23 @@
+id: aws-root-account-usage
+title: AWS root account console login
+description: Detects successful console logins by the AWS root account.
+status: stable
+severity: high
+enabled: true
+execution: sigma
+tags:
+  - aws
+  - cloudtrail
+  - identity
+  - privilege
+logsource:
+  source: aws_cloudtrail
+  class_name: authentication
+detection:
+  selection:
+    activity_name: ConsoleLogin
+    status: success
+    actor.user.type: Root
+  condition: selection
+dedupe_key: cloud.account.uid
+dedupe_prefix: aws-root
