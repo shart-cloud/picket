@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.wrangler/
+.turbo/
+coverage/
+*.tsbuildinfo
+.terraform/
+*.tfstate
+*.tfstate.*
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+terraform/**/terraform.tfvars
+terraform/**/tfplan*.bin

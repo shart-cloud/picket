@@ -1,0 +1,6 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "workers/*"
+  - "terraform/ingestion-infra/aws/cloudtrail"
+  - "terraform/ingestion-infra/aws/vpc-flow-logs"

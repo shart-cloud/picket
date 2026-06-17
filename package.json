@@ -1,0 +1,28 @@
+{
+  "name": "picket",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "build": "pnpm build:rules && pnpm -r build",
+    "dev:web": "pnpm --filter @picket/web dev",
+    "build:rules": "pnpm --filter @picket/rules build && node scripts/bundle-rules.mjs",
+    "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
+    "undeploy:cloudflare": "node scripts/undeploy-cloudflare.mjs",
+    "drop:catalog-tables": "node scripts/drop-catalog-tables.mjs",
+    "sync:wrangler-bindings": "node scripts/sync-wrangler-bindings.mjs",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260612.1",
+    "@types/node": "^22.15.21",
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.8",
+    "wrangler": "^4.18.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.10.0"
+  }
+}
