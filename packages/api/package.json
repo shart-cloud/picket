@@ -1,0 +1,33 @@
+{
+  "name": "@picket/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.js"
+    },
+    "./middleware": {
+      "types": "./dist/middleware/index.d.ts",
+      "import": "./dist/middleware/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "pnpm --filter @picket/core build && vitest run --passWithNoTests",
+    "typecheck": "pnpm --filter @picket/core build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/core": "workspace:*",
+    "better-auth": "^1.6.11",
+    "@better-auth/api-key": "^1.6.11",
+    "hono": "^4.6.0",
+    "kysely": "^0.28.5",
+    "kysely-d1": "^0.3.0"
+  }
+}

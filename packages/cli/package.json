@@ -1,0 +1,26 @@
+{
+  "name": "@picket/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "picket": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "pnpm --filter @picket/core build && pnpm --filter @picket/normalize build && pnpm --filter @picket/rules build && pnpm --filter @picket/detection-worker build && pnpm --filter @picket/query build && tsc -p tsconfig.json",
+    "test": "pnpm --filter @picket/core build && pnpm --filter @picket/normalize build && pnpm --filter @picket/rules build && pnpm --filter @picket/detection-worker build && pnpm --filter @picket/query build && vitest run",
+    "typecheck": "pnpm --filter @picket/core build && pnpm --filter @picket/normalize build && pnpm --filter @picket/rules build && pnpm --filter @picket/detection-worker build && pnpm --filter @picket/query build && tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@picket/core": "workspace:*",
+    "@picket/detection-worker": "workspace:*",
+    "@picket/normalize": "workspace:*",
+    "@picket/query": "workspace:*"
+  }
+}

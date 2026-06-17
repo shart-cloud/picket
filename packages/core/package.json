@@ -1,0 +1,65 @@
+{
+  "name": "@picket/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./alerts": {
+      "types": "./dist/alerts.d.ts",
+      "import": "./dist/alerts.js"
+    },
+    "./alert-emit": {
+      "types": "./dist/alert-emit.d.ts",
+      "import": "./dist/alert-emit.js"
+    },
+    "./alerts-fake-db": {
+      "types": "./dist/alerts-fake-db.d.ts",
+      "import": "./dist/alerts-fake-db.js"
+    },
+    "./source-health": {
+      "types": "./dist/source-health.d.ts",
+      "import": "./dist/source-health.js"
+    },
+    "./dashboard": {
+      "types": "./dist/dashboard.d.ts",
+      "import": "./dist/dashboard.js"
+    },
+    "./sources": {
+      "types": "./dist/sources.d.ts",
+      "import": "./dist/sources.js"
+    },
+    "./detection-health": {
+      "types": "./dist/detection-health.d.ts",
+      "import": "./dist/detection-health.js"
+    },
+    "./enrichment": {
+      "types": "./dist/enrichment.d.ts",
+      "import": "./dist/enrichment.js"
+    },
+    "./detection-rules": {
+      "types": "./dist/detection-rules.d.ts",
+      "import": "./dist/detection-rules.js"
+    },
+    "./scheduled-detection": {
+      "types": "./dist/scheduled-detection.d.ts",
+      "import": "./dist/scheduled-detection.js"
+    },
+    "./query-jobs": {
+      "types": "./dist/query-jobs.d.ts",
+      "import": "./dist/query-jobs.js"
+    },
+    "./saved-queries": {
+      "types": "./dist/saved-queries.d.ts",
+      "import": "./dist/saved-queries.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
