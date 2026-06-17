@@ -1,0 +1,8 @@
+{
+  "name": "picket-gcp-cloud-audit-forwarder",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.6"
+  }
+}

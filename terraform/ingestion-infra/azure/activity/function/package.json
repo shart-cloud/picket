@@ -1,0 +1,9 @@
+{
+  "name": "picket-azure-activity-forwarder",
+  "version": "0.0.0",
+  "type": "module",
+  "dependencies": {
+    "@azure/functions": "^4.7.2"
+  },
+  "main": "src/index.mjs"
+}

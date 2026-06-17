@@ -1,0 +1,12 @@
+{
+  "name": "picket-aks-audit-forwarder",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.mjs",
+  "engines": {
+    "node": "20"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0"
+  }
+}

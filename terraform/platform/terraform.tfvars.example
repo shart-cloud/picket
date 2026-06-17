@@ -1,0 +1,20 @@
+cloudflare_account_id = "00000000000000000000000000000000"
+
+# Set secrets with environment variables so token values never land in tfvars:
+# export TF_VAR_cloudflare_api_token=...
+# export TF_VAR_r2_catalog_token=...
+
+# Emails allowed into picket-admin (otherwise the Access app rejects everyone).
+# Each entry becomes an `include.email` rule on the allow-policy.
+picket_admin_allowed_emails = ["you@example.com"]
+
+# Optional overrides
+# r2_bucket_name                 = "picket-lake"
+# d1_database_name               = "picket-alert-state"
+# alert_queue_name               = "picket-alerts"
+# kv_namespace_title             = "picket-config"
+# r2_catalog_namespace           = "default"
+# pipeline_roll_interval_seconds = 60
+# picket_admin_domain            = "picket.shart.cloud"
+# picket_admin_zone_name         = "shart.cloud"
+# picket_admin_session_duration  = "24h"
