@@ -1,0 +1,27 @@
+{
+  "insertId": "gcp-audit-1",
+  "timestamp": "2026-05-26T12:01:00.000Z",
+  "resource": {
+    "type": "project",
+    "labels": {
+      "project_id": "prod-project",
+      "location": "global"
+    }
+  },
+  "protoPayload": {
+    "serviceName": "cloudresourcemanager.googleapis.com",
+    "methodName": "SetIamPolicy",
+    "resourceName": "projects/prod-project",
+    "authenticationInfo": {
+      "principalEmail": "admin@example.com",
+      "principalSubject": "user:admin@example.com"
+    },
+    "requestMetadata": {
+      "callerIp": "203.0.113.80",
+      "callerSuppliedUserAgent": "google-cloud-sdk gcloud"
+    },
+    "status": {
+      "code": 0
+    }
+  }
+}

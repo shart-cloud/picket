@@ -1,0 +1,35 @@
+{
+  "uuid": "22222222-2222-4222-8222-222222222222",
+  "published": "2026-05-26T12:01:00.000Z",
+  "eventType": "user.authentication.failed",
+  "displayMessage": "User login to Okta failed",
+  "actor": {
+    "id": "00u123example",
+    "type": "User",
+    "alternateId": "alice@example.com",
+    "displayName": "Alice Example"
+  },
+  "client": {
+    "ipAddress": "198.51.100.23",
+    "userAgent": {
+      "rawUserAgent": "Mozilla/5.0"
+    },
+    "ipChain": [
+      {
+        "ip": "198.51.100.23",
+        "geographicalContext": {
+          "country": "United States",
+          "state": "California",
+          "city": "San Francisco"
+        }
+      }
+    ]
+  },
+  "outcome": {
+    "result": "FAILURE",
+    "reason": "INVALID_CREDENTIALS"
+  },
+  "request": {
+    "uri": "/api/v1/authn"
+  }
+}

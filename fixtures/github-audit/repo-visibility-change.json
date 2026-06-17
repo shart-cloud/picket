@@ -1,0 +1,12 @@
+{
+  "@timestamp": "2026-05-26T12:20:00Z",
+  "_document_id": "github-audit-0001",
+  "action": "repo.visibility_change",
+  "actor": "alice",
+  "actor_id": "1001",
+  "actor_ip": "203.0.113.88",
+  "org": "example-org",
+  "repo": "example-org/private-repo",
+  "visibility": "public",
+  "operation_type": "modify"
+}

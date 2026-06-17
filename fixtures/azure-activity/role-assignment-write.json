@@ -1,0 +1,26 @@
+{
+  "eventDataId": "az-activity-1",
+  "eventTimestamp": "2026-05-26T12:02:00.000Z",
+  "subscriptionId": "sub-0001",
+  "tenantId": "tenant-0001",
+  "resourceProviderName": "Microsoft.Authorization",
+  "resourceRegion": "global",
+  "operationName": "Microsoft.Authorization/roleAssignments/write",
+  "status": "Succeeded",
+  "caller": "admin@example.com",
+  "callerIpAddress": "192.0.2.55",
+  "description": "Created role assignment",
+  "claims": {
+    "oid": "user-0001",
+    "upn": "admin@example.com",
+    "idtyp": "user"
+  },
+  "authorization": {
+    "action": "Microsoft.Authorization/roleAssignments/write"
+  },
+  "httpRequest": {
+    "method": "PUT",
+    "uri": "https://management.azure.com/subscriptions/sub-0001/providers/Microsoft.Authorization/roleAssignments/ra-1",
+    "clientIpAddress": "192.0.2.55"
+  }
+}

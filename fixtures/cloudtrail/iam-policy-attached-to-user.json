@@ -1,0 +1,23 @@
+{
+  "eventVersion": "1.08",
+  "userIdentity": {
+    "type": "IAMUser",
+    "principalId": "AIDAADMIN",
+    "arn": "arn:aws:iam::123456789012:user/admin",
+    "accountId": "123456789012",
+    "userName": "admin"
+  },
+  "eventTime": "2026-05-26T12:10:00Z",
+  "eventSource": "iam.amazonaws.com",
+  "eventName": "AttachUserPolicy",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "203.0.113.20",
+  "userAgent": "aws-cli/2.15.0",
+  "requestParameters": {
+    "userName": "alice",
+    "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+  },
+  "responseElements": null,
+  "eventID": "33333333-3333-4333-8333-333333333333",
+  "recipientAccountId": "123456789012"
+}

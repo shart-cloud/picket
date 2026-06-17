@@ -1,0 +1,15 @@
+{
+  "category": "kube-audit-admin",
+  "operationName": "ContainerService.AuditAdminEvent",
+  "time": "2026-05-26T12:02:00.000Z",
+  "resourceId": "/SUBSCRIPTIONS/00000000-0000-0000-0000-000000000000/RESOURCEGROUPS/RG-PROD-EUS/PROVIDERS/MICROSOFT.CONTAINERSERVICE/MANAGEDCLUSTERS/AKS-PROD-EUS",
+  "properties": {
+    "log": "{\"kind\":\"Event\",\"apiVersion\":\"audit.k8s.io/v1\",\"level\":\"RequestResponse\",\"auditID\":\"c3d4e5f6-0000-4000-8000-000000000003\",\"stage\":\"ResponseComplete\",\"requestURI\":\"/apis/rbac.authorization.k8s.io/v1/clusterrolebindings/cluster-admin-binding\",\"verb\":\"update\",\"user\":{\"username\":\"masterclient\",\"groups\":[\"system:masters\",\"system:authenticated\"]},\"sourceIPs\":[\"10.244.0.5\"],\"userAgent\":\"kubectl/v1.30.0\",\"objectRef\":{\"resource\":\"clusterrolebindings\",\"name\":\"cluster-admin-binding\",\"apiGroup\":\"rbac.authorization.k8s.io\",\"apiVersion\":\"v1\"},\"responseStatus\":{\"metadata\":{},\"code\":200},\"requestReceivedTimestamp\":\"2026-05-26T12:02:00.000Z\",\"stageTimestamp\":\"2026-05-26T12:02:00.087Z\"}",
+    "stream": "stdout",
+    "pod": "kube-audit-aks-7c4f9d-xyz"
+  },
+  "cluster_name": "aks-prod-eus",
+  "cluster_region": "eastus",
+  "cloud_provider": "azure",
+  "cloud_account": "rg-prod-eus/aks-prod-eus"
+}

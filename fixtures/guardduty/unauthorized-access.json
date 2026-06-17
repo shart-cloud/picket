@@ -1,0 +1,37 @@
+{
+  "version": "0",
+  "id": "evt-1234",
+  "detail-type": "GuardDuty Finding",
+  "source": "aws.guardduty",
+  "account": "123456789012",
+  "time": "2026-05-26T12:00:00Z",
+  "region": "us-east-1",
+  "detail": {
+    "schemaVersion": "2.0",
+    "id": "gd-finding-1",
+    "accountId": "123456789012",
+    "region": "us-east-1",
+    "type": "UnauthorizedAccess:IAMUser/ConsoleLogin",
+    "severity": 7,
+    "createdAt": "2026-05-26T11:58:00.000Z",
+    "updatedAt": "2026-05-26T12:00:00.000Z",
+    "description": "An IAM user attempted an anomalous console login.",
+    "resource": {
+      "resourceType": "AccessKey",
+      "accessKeyDetails": {
+        "userName": "alice"
+      }
+    },
+    "service": {
+      "action": {
+        "awsApiCallAction": {
+          "api": "ConsoleLogin",
+          "serviceName": "signin.amazonaws.com",
+          "remoteIpDetails": {
+            "ipAddressV4": "198.51.100.66"
+          }
+        }
+      }
+    }
+  }
+}

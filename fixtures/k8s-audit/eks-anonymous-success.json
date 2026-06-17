@@ -1,0 +1,37 @@
+{
+  "kind": "Event",
+  "apiVersion": "audit.k8s.io/v1",
+  "level": "Metadata",
+  "auditID": "b2c3d4e5-0000-4000-8000-000000000002",
+  "stage": "ResponseComplete",
+  "requestURI": "/api/v1/namespaces/kube-system/pods",
+  "verb": "list",
+  "user": {
+    "username": "system:anonymous",
+    "groups": ["system:unauthenticated"]
+  },
+  "sourceIPs": ["203.0.113.42"],
+  "userAgent": "curl/8.4.0",
+  "objectRef": {
+    "resource": "pods",
+    "namespace": "kube-system",
+    "apiVersion": "v1"
+  },
+  "responseStatus": {
+    "metadata": {},
+    "code": 200
+  },
+  "requestReceivedTimestamp": "2026-05-26T12:01:00.000000Z",
+  "stageTimestamp": "2026-05-26T12:01:00.045000Z",
+  "annotations": {
+    "authorization.k8s.io/decision": "allow",
+    "authorization.k8s.io/reason": "RBAC: allowed by ClusterRoleBinding \"system:public-info-viewer\""
+  },
+  "cluster_name": "prod-use1",
+  "cluster_region": "us-east-1",
+  "cloud_provider": "aws",
+  "cloud_account": "123456789012",
+  "log_stream": "kube-apiserver-audit-1234567890abcdef",
+  "cloudwatch_event_id": "37000000000000000000000000000000000000000000000000000000",
+  "cloudwatch_timestamp": 1716724860000
+}

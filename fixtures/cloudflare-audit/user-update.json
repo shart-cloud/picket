@@ -1,0 +1,18 @@
+{
+  "ID": "33333333-3333-4333-8333-333333333333",
+  "When": "2026-05-26T12:02:00Z",
+  "Action": "zone_settings_update",
+  "AccountID": "cf-account-123",
+  "Actor": {
+    "ID": "cf-user-123",
+    "Email": "admin@example.com",
+    "Type": "user"
+  },
+  "Interface": {
+    "IPAddress": "192.0.2.44"
+  },
+  "Metadata": {
+    "account_id": "cf-account-123",
+    "zone_id": "zone-123"
+  }
+}

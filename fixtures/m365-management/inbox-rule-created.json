@@ -1,0 +1,17 @@
+{
+  "CreationTime": "2026-05-28T13:45:12Z",
+  "Id": "m365-audit-1",
+  "Operation": "New-InboxRule",
+  "OrganizationId": "72f988bf-86f1-41af-91ab-222222222222",
+  "RecordType": 1,
+  "ResultStatus": "Succeeded",
+  "UserId": "alice@example.com",
+  "UserType": "Regular",
+  "Workload": "Exchange",
+  "ClientIP": "198.51.100.91",
+  "ObjectId": "alice@example.com\\ForwardToExternal",
+  "Parameters": [
+    { "Name": "ForwardTo", "Value": "attacker@example.net" },
+    { "Name": "DeleteMessage", "Value": "True" }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "66ea54eb-6301-4ee5-be62-ff5a759b0100",
+  "createdDateTime": "2026-05-26T12:15:00Z",
+  "userDisplayName": "Alice Example",
+  "userPrincipalName": "alice@example.com",
+  "userId": "9f1b6f72-8f3d-4a48-9d9f-111111111111",
+  "appDisplayName": "Azure Portal",
+  "ipAddress": "198.51.100.77",
+  "tenantId": "72f988bf-86f1-41af-91ab-222222222222",
+  "correlationId": "a0f8f5a9-7434-4f00-9af5-333333333333",
+  "status": {
+    "errorCode": 50076,
+    "failureReason": "User needs to perform multi-factor authentication"
+  },
+  "deviceDetail": {
+    "deviceId": "device-123",
+    "displayName": "alice-laptop"
+  },
+  "location": {
+    "city": "Seattle",
+    "state": "Washington",
+    "countryOrRegion": "US"
+  }
+}
