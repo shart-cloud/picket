@@ -133,7 +133,14 @@ export function createPicketAuth({
       deviceAuthorization({
         verificationUri: deviceVerificationUri,
         expiresIn: "15m",
-        interval: "5s"
+        interval: "5s",
+        // better-auth@1.6.11 declares the device-authorization `schema` option
+        // as `z.custom(() => true)` without `.optional()`. Under its declared
+        // zod ^4 (4.4.3 here), an un-`.optional()` field is `nonoptional`, so
+        // omitting `schema` makes the plugin's own options parse throw a
+        // ZodError at betterAuth() construction — taking down every request.
+        // Pass an empty override (a no-op through mergeSchema) to satisfy it.
+        schema: {}
       }),
       bearer()
     ]
