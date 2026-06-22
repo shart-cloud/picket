@@ -11,7 +11,8 @@
     "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
     "undeploy:cloudflare": "node scripts/undeploy-cloudflare.mjs",
     "drop:catalog-tables": "node scripts/drop-catalog-tables.mjs",
-    "sync:wrangler-bindings": "node scripts/sync-wrangler-bindings.mjs",
+    "gen:wrangler": "node scripts/gen-wrangler.mjs",
+    "sync:wrangler-bindings": "node scripts/gen-wrangler.mjs",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
   },

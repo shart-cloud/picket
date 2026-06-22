@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { spawn } from "node:child_process";
-import { readFile } from "node:fs/promises";
 
 // Infra (queue, D1, R2, KV, Pipelines, Data Catalog) is managed by
 // terraform/platform. This script only builds and deploys the Worker bundles.
@@ -15,7 +14,10 @@ const workerConfigs = [
   "workers/scheduled-detection/wrangler.jsonc"
 ];
 
-await assertBindingsResolved(workerConfigs);
+// Regenerate the gitignored wrangler.jsonc files from their templates +
+// `terraform output` so a stale apply can't ship outdated IDs. Fails loudly if
+// terraform hasn't produced the required outputs yet.
+await run("node", ["scripts/gen-wrangler.mjs"]);
 await run("pnpm", ["build"]);
 
 for (const config of workerConfigs) {
@@ -23,20 +25,6 @@ for (const config of workerConfigs) {
 }
 
 console.log("picket deployed. Configure alert destination secrets with wrangler secret put before production use.");
-
-async function assertBindingsResolved(configs) {
-  const unresolved = [];
-  for (const config of configs) {
-    const body = await readFile(config, "utf8");
-    if (body.includes('"MISSING"')) unresolved.push(config);
-  }
-
-  if (unresolved.length === 0) return;
-  throw new Error(
-    `Unresolved Wrangler bindings in:\n${unresolved.map((config) => `  - ${config}`).join("\n")}\n` +
-      "Run `pnpm sync:wrangler-bindings` after `terraform apply` before deploying."
-  );
-}
 
 function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {

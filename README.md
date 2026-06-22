@@ -67,8 +67,8 @@ Current Terraform resources:
 After Terraform applies, return to the repo root and deploy Workers with:
 
 ```sh
-pnpm sync:wrangler-bindings
-pnpm deploy:cloudflare
+pnpm gen:wrangler       # generate gitignored wrangler.jsonc from templates + terraform output
+pnpm deploy:cloudflare  # also runs gen:wrangler first
 ```
 
 Then apply D1 migrations and configure secrets as described in [Deployment](docs/deployment.md).

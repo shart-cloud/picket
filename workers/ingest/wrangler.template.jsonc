@@ -23,55 +23,55 @@
     {
       "binding": "AUTH_DB",
       "database_name": "picket-auth",
-      "database_id": "7ca6ce4d-02f4-4bbe-a8bc-635696f8fb80"
+      "database_id": "__AUTH_DB_ID__"
     },
     {
       "binding": "ALERT_STATE_DB",
       "database_name": "picket-alert-state",
-      "database_id": "36e1ee33-481a-484c-8966-62a604d724ea",
+      "database_id": "__ALERT_STATE_DB_ID__",
       "migrations_dir": "../alert-router/migrations"
     }
   ],
   "pipelines": [
     {
       "binding": "AWS_CLOUDTRAIL_PIPELINE",
-      "pipeline": "65ed3aa9a7de4e6ea7f4062e4c905b77"
+      "pipeline": "__STREAM_AWS_CLOUDTRAIL__"
     },
     {
       "binding": "AWS_VPC_FLOW_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_AWS_VPC_FLOW__"
     },
     {
       "binding": "AWS_GUARDDUTY_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_AWS_GUARDDUTY__"
     },
     {
       "binding": "GCP_CLOUD_AUDIT_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_GCP_CLOUD_AUDIT__"
     },
     {
       "binding": "AZURE_ACTIVITY_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_AZURE_ACTIVITY__"
     },
     {
       "binding": "AZURE_AD_SIGNIN_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_AZURE_AD_SIGNIN__"
     },
     {
       "binding": "GITHUB_AUDIT_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_GITHUB_AUDIT__"
     },
     {
       "binding": "M365_MANAGEMENT_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_M365_MANAGEMENT__"
     },
     {
       "binding": "KUBERNETES_AUDIT_PIPELINE",
-      "pipeline": "bd8b9213711e41e6a9fa27a77ff24a16"
+      "pipeline": "__STREAM_KUBERNETES_AUDIT__"
     },
     {
       "binding": "CLOUDFLARE_AUDIT_PIPELINE",
-      "pipeline": "3e44ecd52ae3417fb06fb7e1976d3436"
+      "pipeline": "__STREAM_CLOUDFLARE_AUDIT__"
     }
   ],
   // Threat-intel IOCs for ingest-time enrichment (M4). The picket-config KV
@@ -79,7 +79,7 @@
   "kv_namespaces": [
     {
       "binding": "ENRICHMENT_KV",
-      "id": "e70fbf31b2c242ebbe99ef46e1bc5e10"
+      "id": "__ENRICHMENT_KV_ID__"
     }
   ]
   // Secrets (set via `wrangler secret put`):

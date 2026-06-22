@@ -1,5 +1,5 @@
 {
-  "name": "picket-detection",
+  "name": "picket-scheduled-detection",
   "main": "src/index.ts",
   "compatibility_date": "2026-05-26",
   "compatibility_flags": ["nodejs_compat"],
@@ -24,29 +24,24 @@
   "pipelines": [
     {
       "binding": "ALERTS_PIPELINE",
-      "pipeline": "cfbcbaa3293845b6a5935e1c42bdc1b9"
+      "pipeline": "__STREAM_ALERTS__"
     }
   ],
   "d1_databases": [
     {
       "binding": "ALERT_STATE_DB",
       "database_name": "picket-alert-state",
-      "database_id": "36e1ee33-481a-484c-8966-62a604d724ea",
+      "database_id": "__ALERT_STATE_DB_ID__",
       "migrations_dir": "../alert-router/migrations"
     }
   ],
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "STATEFUL_DETECTION",
-        "class_name": "StatefulDetectionObject"
-      }
-    ]
-  },
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_sqlite_classes": ["StatefulDetectionObject"]
-    }
-  ]
+  "triggers": {
+    // Tick every 5 minutes; each SQL rule runs when its own `interval` has
+    // elapsed since its last run (tracked in scheduled_detection_state).
+    "crons": ["*/5 * * * *"]
+  }
+  // Vars/secrets to set:
+  //   PICKET_R2_WAREHOUSE  — R2 Data Catalog warehouse (var)
+  //   PICKET_TABLE_SUFFIX  — random_pet table suffix from terraform output (var)
+  //   R2_SQL_TOKEN         — R2 API token with `Workers R2 SQL Read` (secret)
 }

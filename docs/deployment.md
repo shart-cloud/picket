@@ -85,24 +85,30 @@ Terraform outputs the IDs and names that Worker configs need, including:
 - `cf_access_aud`
 - `picket_admin_url`
 
-## 4. Sync Wrangler Bindings
+## 4. Generate Wrangler Configs
 
-From the repo root:
+Each worker's `workers/*/wrangler.jsonc` is **generated** from a committed,
+account-neutral `workers/*/wrangler.template.jsonc` and is gitignored — it holds
+IDs and domains unique to your Cloudflare account, so it must never be
+committed. From the repo root:
 
 ```sh
-pnpm sync:wrangler-bindings
+pnpm gen:wrangler
 ```
 
-This copies Terraform outputs into the `workers/*/wrangler.jsonc` files for D1 IDs, Pipeline stream IDs, KV namespace IDs, and related bindings, including the admin `THREAT_INTEL_PIPELINE`, `ASSETS_PIPELINE`, and `USERS_PIPELINE` bindings used by query-time enrichment.
+This reads `terraform output -json` and substitutes every account-specific value
+into the templates: the D1 IDs, Pipeline stream IDs, KV namespace ID, the admin
+`THREAT_INTEL_PIPELINE` / `ASSETS_PIPELINE` / `USERS_PIPELINE` enrichment
+bindings, and the admin vars `CF_ACCESS_TEAM_DOMAIN`, `CF_ACCESS_AUD`,
+`PICKET_R2_WAREHOUSE`, and `PICKET_TABLE_SUFFIX`. `scheduled-detection` is
+generated from the same outputs, so its alerts pipeline and alert-state DB stay
+in lockstep with Terraform.
 
-Also confirm these admin vars in `workers/admin/wrangler.jsonc` match the Terraform outputs:
-
-- `CF_ACCESS_TEAM_DOMAIN`
-- `CF_ACCESS_AUD`
-- `PICKET_R2_WAREHOUSE`
-- `PICKET_TABLE_SUFFIX`
-
-Also confirm `workers/scheduled-detection/wrangler.jsonc` has the same `PICKET_R2_WAREHOUSE` and `PICKET_TABLE_SUFFIX` values. SQL scheduled detections use these to rewrite logical table names to the suffixed Data Catalog tables created by Terraform.
+There is nothing to paste or confirm by hand. `gen:wrangler` fails loudly if a
+required Terraform output is missing — most commonly `CF_ACCESS_AUD`, which is
+`null` until the picket-admin Access app exists (see the two-phase admin
+bootstrap below). `pnpm deploy:cloudflare` runs `gen:wrangler` first, so a normal
+deploy regenerates from the current Terraform state automatically.
 
 ## 5. Deploy Worker Bundles
 
@@ -179,13 +185,13 @@ Use the same `BETTER_AUTH_SECRET` value for `picket-admin` and `picket-ingest`.
 
 ## 9. Verify Bindings
 
-Before sending production traffic, verify that synced Wrangler configs no longer contain placeholder Pipeline IDs:
+Before sending production traffic, verify that the generated Wrangler configs no longer contain unresolved template placeholders:
 
 ```sh
-grep -R '"pipeline": "MISSING"' workers/*/wrangler.jsonc
+grep -RE '__[A-Z0-9_]+__' workers/*/wrangler.jsonc
 ```
 
-No output means Terraform outputs were synced for all configured Pipeline bindings. If placeholders remain, rerun `pnpm sync:wrangler-bindings` from the repo root and inspect the Terraform outputs for missing streams.
+No output means every placeholder was filled from Terraform outputs. `pnpm gen:wrangler` already errors on any unknown or missing placeholder, so output here means the generated files are stale — rerun `pnpm gen:wrangler` from the repo root and inspect the Terraform outputs for missing streams.
 
 Also verify the enrichment bindings if using IOC, asset, or user loaders:
 
@@ -253,4 +259,4 @@ Target shape:
 - Move D1, Queue, Service, Durable Object, Pipeline, cron, and send-email bindings from `wrangler.jsonc` into Terraform
 - Keep secret values managed through Wrangler or another non-state secret workflow
 
-Once that is in place, `scripts/sync-wrangler-bindings.mjs` and most environment-specific Wrangler IDs can go away.
+Once that is in place, `scripts/gen-wrangler.mjs` and most environment-specific Wrangler IDs can go away.

@@ -74,7 +74,7 @@ Okta stays deferred (no test tenant). New sources need a Pipeline + Iceberg tabl
 in `terraform/platform` (and the `PICKET_TABLE_SUFFIX` hand-sync gotcha), plus
 provider-side collection modules where noted above.
 
-**Exit:** PRD metric — 10+ sources with platform Pipeline/Iceberg tables and provider collection modules or documented patterns; each table queryable via `wrangler r2 sql query` after Terraform apply and `sync:wrangler-bindings`.
+**Exit:** PRD metric — 10+ sources with platform Pipeline/Iceberg tables and provider collection modules or documented patterns; each table queryable via `wrangler r2 sql query` after Terraform apply and `gen:wrangler`.
 
 ---
 

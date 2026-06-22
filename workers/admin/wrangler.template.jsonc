@@ -23,12 +23,12 @@
     {
       "binding": "AUTH_DB",
       "database_name": "picket-auth",
-      "database_id": "7ca6ce4d-02f4-4bbe-a8bc-635696f8fb80"
+      "database_id": "__AUTH_DB_ID__"
     },
     {
       "binding": "ALERT_STATE_DB",
       "database_name": "picket-alert-state",
-      "database_id": "36e1ee33-481a-484c-8966-62a604d724ea",
+      "database_id": "__ALERT_STATE_DB_ID__",
       "migrations_dir": "../alert-router/migrations"
     }
   ],
@@ -43,15 +43,15 @@
   "pipelines": [
     {
       "binding": "THREAT_INTEL_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_THREAT_INTEL__"
     },
     {
       "binding": "ASSETS_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_ASSETS__"
     },
     {
       "binding": "USERS_PIPELINE",
-      "pipeline": "MISSING"
+      "pipeline": "__STREAM_USERS__"
     }
   ],
   // Threat-intel IOC store for /api/v1/enrichment (M4). Same picket-config KV
@@ -59,14 +59,14 @@
   "kv_namespaces": [
     {
       "binding": "ENRICHMENT_KV",
-      "id": "e70fbf31b2c242ebbe99ef46e1bc5e10"
+      "id": "__ENRICHMENT_KV_ID__"
     }
   ],
   "vars": {
-    "CF_ACCESS_TEAM_DOMAIN": "shartdotcloud.cloudflareaccess.com",
-    "CF_ACCESS_AUD": "51ca0503f9d1fcf6a77325a8ae12c81bbc3c379a11cc3ed25867408a5d44b701",
-    "PICKET_R2_WAREHOUSE": "11caecd272df7dbdcc636034c25b1f1c_picket-lake",
-    "PICKET_TABLE_SUFFIX": "chief_viper"
+    "CF_ACCESS_TEAM_DOMAIN": "__CF_ACCESS_TEAM_DOMAIN__",
+    "CF_ACCESS_AUD": "__CF_ACCESS_AUD__",
+    "PICKET_R2_WAREHOUSE": "__PICKET_R2_WAREHOUSE__",
+    "PICKET_TABLE_SUFFIX": "__PICKET_TABLE_SUFFIX__"
     // Optional: "PICKET_NL_QUERY_MODEL" overrides the NL-query model (default claude-opus-4-8).
   }
   // Secrets (set via `wrangler secret put`):

@@ -47,8 +47,8 @@ output "stream_ids" {
   description = <<EOT
 Map of source key → stream ID. These IDs are what `workers/*/wrangler.jsonc`
 `pipelines[].pipeline` fields need — Worker pipeline bindings reject stream
-names and pipeline names, so always use the ID. After `terraform apply`,
-re-run `terraform output stream_ids` and patch the wrangler configs.
+names and pipeline names, so always use the ID. After `terraform apply`, run
+`pnpm gen:wrangler` to substitute these into the generated wrangler configs.
 EOT
   value       = { for k, s in cloudflare_pipeline_stream.source : k => s.id }
 }
@@ -59,12 +59,12 @@ output "stream_names" {
 }
 
 output "cf_access_team_domain" {
-  description = "Zero Trust team auth domain (e.g. `yourteam.cloudflareaccess.com`). Paste into `workers/admin/wrangler.jsonc` vars.CF_ACCESS_TEAM_DOMAIN."
+  description = "Zero Trust team auth domain (e.g. `yourteam.cloudflareaccess.com`). Consumed by `pnpm gen:wrangler` as admin vars.CF_ACCESS_TEAM_DOMAIN."
   value       = data.cloudflare_zero_trust_organization.this.auth_domain
 }
 
 output "cf_access_aud" {
-  description = "AUD claim of the picket-admin Access application. Null until `picket_admin_worker_deployed = true`. Paste into `workers/admin/wrangler.jsonc` vars.CF_ACCESS_AUD once populated."
+  description = "AUD claim of the picket-admin Access application. Null until `picket_admin_worker_deployed = true`. Consumed by `pnpm gen:wrangler` as admin vars.CF_ACCESS_AUD once populated."
   value       = length(cloudflare_zero_trust_access_application.picket_admin) == 0 ? null : cloudflare_zero_trust_access_application.picket_admin[0].aud
 }
 

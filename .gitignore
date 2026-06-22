@@ -1,5 +1,9 @@
 node_modules/
 dist/
+# Generated per-account from workers/*/wrangler.template.jsonc by
+# `pnpm gen:wrangler` (reads `terraform output`). Holds account-specific IDs
+# and domains — never commit. The committed template is account-neutral.
+workers/*/wrangler.jsonc
 .wrangler/
 .turbo/
 coverage/

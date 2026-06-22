@@ -26,7 +26,7 @@
     {
       "binding": "ALERT_STATE_DB",
       "database_name": "picket-alert-state",
-      "database_id": "36e1ee33-481a-484c-8966-62a604d724ea",
+      "database_id": "__ALERT_STATE_DB_ID__",
       "migrations_dir": "../alert-router/migrations"
     }
   ],
