@@ -6,7 +6,9 @@ import { RouterProvider, createRootRoute, createRoute, createRouter, Link, Outle
 import { AlertDetailPage } from "./pages/alert-detail";
 import { AlertsPage } from "./pages/alerts";
 import { DashboardPage } from "./pages/dashboard";
+import { DetectionDetailPage } from "./pages/detection-detail";
 import { DetectionsPage } from "./pages/detections";
+import { EnrichmentPage } from "./pages/enrichment";
 import { QueryPage } from "./pages/query";
 import { SourcesPage } from "./pages/sources";
 import { SourceDetailPage } from "./pages/source-detail";
@@ -39,6 +41,7 @@ function AppShell() {
           <Link to="/alerts" activeProps={{ className: "active" }}>Alerts</Link>
           <Link to="/detections" activeProps={{ className: "active" }}>Detections</Link>
           <Link to="/sources" activeProps={{ className: "active" }}>Sources</Link>
+          <Link to="/enrichment" activeProps={{ className: "active" }}>Enrichment</Link>
           <Link to="/query" activeProps={{ className: "active" }}>Query</Link>
         </nav>
       </aside>
@@ -61,7 +64,9 @@ const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: "/", com
 const alertsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/alerts", component: AlertsPage });
 const alertDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: "/alerts/$alertId", component: AlertDetailPage });
 const detectionsRoute = createRoute({ getParentRoute: () => rootRoute, path: "/detections", component: DetectionsPage });
+const detectionDetailRoute = createRoute({ getParentRoute: () => rootRoute, path: "/detections/$ruleId", component: DetectionDetailPage });
 const sourcesRoute = createRoute({ getParentRoute: () => rootRoute, path: "/sources", component: SourcesPage });
+const enrichmentRoute = createRoute({ getParentRoute: () => rootRoute, path: "/enrichment", component: EnrichmentPage });
 const sourceDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/sources/$sourceId",
@@ -72,7 +77,7 @@ const sourceDetailRoute = createRoute({
 });
 const queryRoute = createRoute({ getParentRoute: () => rootRoute, path: "/query", component: QueryPage });
 
-const routeTree = rootRoute.addChildren([indexRoute, alertsRoute, alertDetailRoute, detectionsRoute, sourcesRoute, sourceDetailRoute, queryRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, alertsRoute, alertDetailRoute, detectionsRoute, detectionDetailRoute, sourcesRoute, sourceDetailRoute, enrichmentRoute, queryRoute]);
 const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {

@@ -65,6 +65,38 @@ export interface QueryResult {
   rows: Record<string, unknown>[];
 }
 
+export interface ScheduledDetectionView {
+  id: string;
+  title: string;
+  severity: string;
+  source: string;
+  enabled: boolean;
+  interval: string | null;
+  last_run_at: string | null;
+  last_status: "ok" | "error" | "skipped" | null;
+  last_row_count: number | null;
+  last_alert_count: number | null;
+  last_error: string | null;
+  due: boolean;
+}
+
+export type IndicatorType = "ipv4" | "ipv6" | "domain" | "url" | "sha256";
+
+export interface IocRecord {
+  indicator: string;
+  indicator_type: IndicatorType;
+  feed_name?: string;
+  threat_type?: string;
+  added_at?: string;
+}
+
+export interface EnrichmentFeed {
+  name: string;
+  type: string;
+  indicator_count: number;
+  last_updated: string | null;
+}
+
 export interface QueryExplain {
   sql: string;
   valid: boolean;
@@ -183,12 +215,62 @@ export async function listDetections(): Promise<DetectionRuleRow[]> {
   return body.rules;
 }
 
+export async function getDetection(id: string): Promise<DetectionRuleRow> {
+  const body = await request<{ rule: DetectionRuleRow }>(`/api/v1/detections/${encodeURIComponent(id)}`);
+  return body.rule;
+}
+
 export async function setDetectionEnabled(id: string, enabled: boolean): Promise<DetectionRuleRow> {
   const body = await request<{ rule: DetectionRuleRow }>(`/api/v1/detections/${encodeURIComponent(id)}`, {
     method: "PATCH",
     body: JSON.stringify({ enabled })
   });
   return body.rule;
+}
+
+export async function listScheduledDetections(): Promise<ScheduledDetectionView[]> {
+  const body = await request<{ scheduled: ScheduledDetectionView[] }>("/api/v1/detections/scheduled");
+  return body.scheduled;
+}
+
+export async function listEnrichmentFeeds(): Promise<EnrichmentFeed[]> {
+  const body = await request<{ feeds: EnrichmentFeed[] }>("/api/v1/enrichment/feeds");
+  return body.feeds;
+}
+
+export async function listIocs(type?: IndicatorType): Promise<IocRecord[]> {
+  const params = new URLSearchParams();
+  if (type) params.set("type", type);
+  const suffix = params.size > 0 ? `?${params}` : "";
+  const body = await request<{ iocs: IocRecord[] }>(`/api/v1/enrichment/iocs${suffix}`);
+  return body.iocs;
+}
+
+export async function addIoc(input: IocRecord): Promise<number> {
+  const body = await request<{ written: number }>("/api/v1/enrichment/iocs", {
+    method: "POST",
+    body: JSON.stringify(input)
+  });
+  return body.written;
+}
+
+export async function importIocCsv(input: { csv: string; feed?: string; threatType?: string }): Promise<number> {
+  const params = new URLSearchParams();
+  if (input.feed) params.set("feed", input.feed);
+  if (input.threatType) params.set("threat_type", input.threatType);
+  const suffix = params.size > 0 ? `?${params}` : "";
+  const body = await request<{ written: number }>(`/api/v1/enrichment/iocs/import${suffix}`, {
+    method: "POST",
+    headers: { "content-type": "text/csv" },
+    body: input.csv
+  });
+  return body.written;
+}
+
+export async function deleteIoc(type: IndicatorType, indicator: string): Promise<void> {
+  await request<{ deleted: boolean }>(`/api/v1/enrichment/iocs/${encodeURIComponent(type)}/${encodeURIComponent(indicator)}`, {
+    method: "DELETE"
+  });
 }
 
 export async function listSources(): Promise<SourceHealthRow[]> {

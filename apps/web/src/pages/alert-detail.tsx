@@ -4,8 +4,10 @@ import { Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AlertStatus } from "@picket/core/alerts";
 
-import { addAlertNote, assignAlert, getAlert, updateAlertStatus } from "../api";
+import { addAlertNote, assignAlert, getAlert, runSqlQuery, updateAlertStatus } from "../api";
+import { buildAlertContextQuery } from "../alert-context";
 import { parseAlertEvent, summarizeAlertEvent } from "../alert-utils";
+import { asQueryResult, formatQueryCell } from "../query-utils";
 import { useSession, SessionRequiredNotice } from "../session";
 import { EmptyState, ErrorState, LoadingState } from "../ui";
 
@@ -18,6 +20,7 @@ export function AlertDetailPage() {
   const canMutate = Boolean(session.data?.user);
   const [assignee, setAssignee] = useState("");
   const [note, setNote] = useState("");
+  const [contextWindow, setContextWindow] = useState(30);
 
   const detail = useQuery({ queryKey: ["alerts", alertId], queryFn: () => getAlert(alertId) });
 
@@ -43,6 +46,9 @@ export function AlertDetailPage() {
       await invalidateAlertState();
     }
   });
+  const contextMutation = useMutation({
+    mutationFn: (sql: string) => runSqlQuery(sql)
+  });
 
   function onAssign(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -63,6 +69,7 @@ export function AlertDetailPage() {
   const { alert, timeline, notes } = detail.data;
   const event = parseAlertEvent(alert.event_json);
   const summary = event ? summarizeAlertEvent(event) : null;
+  const contextQuery = event ? buildAlertContextQuery({ source: alert.source, lastSeen: alert.last_seen, event, windowMinutes: contextWindow }) : null;
   const rawEvent = formatJson(alert.event_json);
   const busy = statusMutation.isPending || assignMutation.isPending || noteMutation.isPending;
 
@@ -115,6 +122,37 @@ export function AlertDetailPage() {
           ) : null}
         </article>
       ) : null}
+
+      <article className="panel">
+        <div className="panel-header">
+          <div>
+            <h2>Context Timeline</h2>
+            <span>{contextQuery ? `Pivoting on ${contextQuery.pivots.join(", ")}` : "No pivot fields found"}</span>
+          </div>
+          <div className="button-row context-controls">
+            <label>
+              Window
+              <select value={contextWindow} onChange={(event) => setContextWindow(Number(event.target.value))}>
+                <option value={15}>15m</option>
+                <option value={30}>30m</option>
+                <option value={60}>1h</option>
+                <option value={240}>4h</option>
+              </select>
+            </label>
+            <button
+              className="button"
+              disabled={!contextQuery || contextMutation.isPending}
+              onClick={() => contextQuery && contextMutation.mutate(contextQuery.sql)}
+              type="button"
+            >
+              {contextMutation.isPending ? "Loading context" : "Load context"}
+            </button>
+          </div>
+        </div>
+        {contextQuery ? <details className="context-sql"><summary>Generated SQL</summary><pre>{contextQuery.sql}</pre></details> : null}
+        {contextMutation.isError ? <ErrorState error={contextMutation.error} /> : null}
+        <ContextTimeline result={asQueryResult(contextMutation.data?.result)} />
+      </article>
 
       <div className="panel-grid detail-grid">
         <article className="panel">
@@ -205,6 +243,37 @@ export function AlertDetailPage() {
   );
 }
 
+function ContextTimeline({ result }: { result: ReturnType<typeof asQueryResult> }) {
+  if (!result) return <div className="empty-table">Load context to query nearby events for the same entity.</div>;
+  if (result.rows.length === 0) return <div className="empty-table">No related events found in this window.</div>;
+
+  return (
+    <div className="context-timeline">
+      {result.rows.map((row, index) => (
+        <div className="context-event" key={index}>
+          <span className="timeline-marker" />
+          <div>
+            <div className="context-event-heading">
+              <strong>{cell(row.activity_name ?? row.api_operation ?? "Event")}</strong>
+              <small>{cell(row.source)} · {formatTimestamp(asString(row.time))}</small>
+            </div>
+            <div className="chip-row">
+              <span>{cell(row.status)}</span>
+              {row.actor_user_email || row.actor_user_uid ? <span>{cell(row.actor_user_email ?? row.actor_user_uid)}</span> : null}
+              {row.src_endpoint_ip ? <span>{cell(row.src_endpoint_ip)}</span> : null}
+              {row.threat_match_indicator ? <span className="severity high">IOC {cell(row.threat_match_indicator)}</span> : null}
+            </div>
+            <details className="event-details">
+              <summary>View row</summary>
+              <pre>{JSON.stringify(row, null, 2)}</pre>
+            </details>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function SummaryField({ label, value }: { label: string; value?: string }) {
   if (!value) return null;
   return (
@@ -213,6 +282,21 @@ function SummaryField({ label, value }: { label: string; value?: string }) {
       <strong>{value}</strong>
     </div>
   );
+}
+
+function cell(value: unknown) {
+  const formatted = formatQueryCell(value);
+  return value === null || value === undefined || formatted === "" ? "-" : formatted;
+}
+
+function asString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function formatTimestamp(value: string | null): string {
+  if (!value) return "-";
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString();
 }
 
 function formatJson(value: string): string {

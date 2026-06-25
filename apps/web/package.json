@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "dev": "vite",
+    "dev:mock": "PICKET_MOCK_API=1 vite",
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc -b --noEmit"

@@ -15,6 +15,7 @@ coverage/
 *.tfvars
 *.tfplan
 *.tfplan*.bin
+tfplan*.bin
 override.tf
 override.tf.json
 *_override.tf
