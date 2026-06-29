@@ -1,10 +1,12 @@
 # picket
 
-![picket](docs/iww.jpg)
-
 Serverless SIEM components built around Cloudflare Workers, R2, Pipelines, Queues, D1, and Durable Objects.
 
 This repository is building an MVP backend slice: ingestion, normalization, real-time detection, alert routing, alert state, source health, query execution, and Cloudflare/Terraform deployment scaffolding.
+
+## why picket?
+
+Since picket runs on workers it felt only right to shoutout labor movements of the past like the IWW. Fuck and suck a union organizer today! No war but class war, poppa. 
 
 ## Development
 
